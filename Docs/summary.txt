@@ -1,0 +1,77 @@
+#1 Server-side and client-side Applications
+ - 1 server side application là 1 nơi mà trang web được render từ server (HTML, CSS, ảnh, JS,...) và gửi chúng đến client
+ - 1 client side application ngược lại render UI từ việc khởi tại trang web chỉ 1 lần. Nó sử dụng JS để modify DOM và không cần dựa vào trên máy chủ để hiển thị các trang mới
+
+Server side application thường được gọi là server-side rendered(SSR) và client-side application thường được dọi là single-page applications(SPAs)
+
+Thường sử dụng template engine handlebars khi phát triển ứng dụng web với express.JS
+cấu trúc thư mục
+.
+├── app.js
+└── views
+    ├── home.handlebars
+    └── layouts
+        └── main.handlebars
+
+khai báo và cấu hình handlebars trong app.js
+- render các view sử dụng res.render('viewName')
+
+Helpers là hàm đã đăng ký với handlebars và có thể gọi vào template
+Handlebars mang đến những helpers built-in như with, if, each,..
+
+Ví dụ:
+
+# app.js
+var express = require('express');
+var exphbs  = require('express-handlebars');
+
+var app = express();
+
+var hbs = exphbs.create({
+    // Specify helpers which are only registered on this instance.
+    helpers: {
+        foo: function () { return 'FOO!'; },
+        bar: function () { return 'BAR!'; }
+    }
+});
+
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+app.get('/', function (req, res, next) {
+    res.render('home', {
+        showTitle: true,
+
+        // Override `foo` helper only for this rendering.
+        helpers: {
+            foo: function () { return 'foo.'; }
+        }
+    });
+});
+
+app.listen(3000);
+
+# views/home.handlebars:
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Example App - Home</title>
+    </head>
+    <body>
+
+    <!-- Uses built-in `if` helper. -->
+    {{#if showTitle}}
+        <h1>Home</h1>
+    {{/if}}
+
+    <!-- Calls `foo` helper, overridden at render-level. -->
+    <p>{{foo}}</p>
+
+    <!-- Calls `bar` helper, defined at instance-level. -->
+    <p>{{bar}}</p>
+
+    </body>
+</html>
+
+Biến showTitle có thể gửi thông qua res.render và các hàm helpers
