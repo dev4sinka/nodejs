@@ -75,3 +75,20 @@ app.listen(3000);
 </html>
 
 Biến showTitle có thể gửi thông qua res.render và các hàm helpers
+
+Đối tượng request
+
+- req.params: là 1 danh sách chứa tên route
+- req.query: là 1 đối tượng chứa các truy vấn với các cặp name/value, đôi khi được gọi qua GET
+- req.body: là 1 đối tượng chứa POST parameters
+- req.route: thông tin về route hiện tại 
+- req.coolies/req.signedCookies: là đối tượng chứa cookie value được truyền bới client
+- req.headers: là yêu cầu được gửi từ client
+- req.accepts(type)
+- req.ip: là địa chỉ ip của client
+- req.path
+- req.hostname
+- req.xhr: trả về true nếu như yêu cầu được gọi qua ajax
+- req.protocol: là protocol được sử dụng để tạo request thường là http hoặc https
+- req.secure: trả về true nếu kết nối an toàn (HTTPS)
+- req.url/ 
